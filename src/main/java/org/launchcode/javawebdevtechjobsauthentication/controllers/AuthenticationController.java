@@ -26,10 +26,10 @@ public class AuthenticationController {
 
     private static final String sessionKey = "user";
 
-    public User prettyName(HttpSession session) {
+    public User getUserFromSession(HttpSession session) {
         Integer userId = (Integer) session.getAttribute(sessionKey);
 
-        if (userId.equals(null)) {
+        if (userId == null) {
             return null;
         }
         Optional<User> user = userRepository.findById(userId);
@@ -78,7 +78,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("login")
-    public String loginForm(Model model) {
+    public String displayLoginForm(Model model) {
         model.addAttribute("title", "Login");
         model.addAttribute(new LoginFormDTO());
         return "login";
@@ -102,7 +102,7 @@ public class AuthenticationController {
             errors.reject("Invalid password", "Password is incorrect.");
             return "login";
         }
-        
+
         userRepository.save(theUser);
         return "redirect:";
     }
